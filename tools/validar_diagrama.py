@@ -13,10 +13,10 @@ root = ET.parse(base / "docs" / "diagrama-classes.drawio").getroot()
 cells = root.findall(".//mxCell")
 by_id = {cell.get("id"): cell for cell in cells}
 sources = sorted((base / "src/main/java/br/edu/nexusheroes").glob("*.java"))
-class_names = {path.stem for path in sources}
+class_names = {path.stem for path in sources} - {"Main"}
 groups = {cell.get("id"): cell for cell in cells if cell.get("style", "").startswith("group;")}
 assert class_names <= groups.keys(), sorted(class_names - groups.keys())
-assert "Exception" in groups
+assert not {"Main", "Exception"} & groups.keys()
 
 
 def geometry(cell):
